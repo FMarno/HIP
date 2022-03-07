@@ -108,7 +108,15 @@ include_directories(
     ${JSON_PARSER}
 )
 
-file(COPY ./hipTestMain/config DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/hipTestMain)
+set(TestSkipFiles
+    config_amd_linux.json
+    config_amd_windows.json
+    )
+foreach(TestSkipFile ${TestSkipFiles})
+    # configure_file will keep the file up-to-date with changes
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/hipTestMain/config/${TestSkipFile} ${CMAKE_CURRENT_BINARY_DIR}/hipTestMain/config/${TestSkipFile} COPYONLY)
+endforeach()
+
 file(COPY ./external/Catch2/cmake/Catch2/CatchAddTests.cmake DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/script)
 set(ADD_SCRIPT_PATH ${CMAKE_CURRENT_BINARY_DIR}/script/CatchAddTests.cmake)
 
